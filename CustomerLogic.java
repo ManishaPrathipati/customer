@@ -7,6 +7,9 @@ import java.util.TreeSet;
 class DuplicateCustomerId extends Exception {
 
 }
+class NoCustomerDetailsFound extends Exception {
+
+}
 
 public class CustomerLogic {
 	Scanner sc = new Scanner(System.in);
@@ -17,22 +20,24 @@ public class CustomerLogic {
 	Customer c = new Customer();
 	
 	// 1. Add Customer
-	public void addCustomer() throws DuplicateCustomerId {
+	public void addCustomer() throws DuplicateCustomerId{
 		Customer cm = new Customer();
 		System.out.println("enter Customer id");
 		String id = sc.next();
 		if(ts.contains(id)) {
-			for (int i = 0; i < ts.size(); i++) {
+			int attempt = 1;
+			for (int i = 1; i <= attempt; i++) {
 				System.out.println(id + " Id Already Exists, Please enter another id");
-				nId = sc.next();	
-				if(!((ts.contains(nId)) || (id.equals(nId)))) {
-					ts.add(nId);
-					cm.setCustomerId(nId);
+				id = sc.next();
+				if (!(ts.contains(id))) {
+					ts.add(id);
+					cm.setCustomerId(id);
 					break;
-				}
-				else {
-					throw new DuplicateCustomerId(); 
-				}
+				} 
+				else if (attempt == 2)
+					throw new DuplicateCustomerId();
+				else
+					attempt++;
 			}
 		}
 		else {
@@ -59,72 +64,89 @@ public class CustomerLogic {
 	}
 
 	// Removing Customer by CustomerId
-	public void removeCustomer() {
+	public void removeCustomer() throws NoCustomerDetailsFound {
 		if (al.isEmpty()) {
-			System.out.println("No Customer Details Exists, Add the Customer details to Remove Customer");
+			//System.out.println("No Customer Details Exists, Add the Customer details to Remove Customer");
+			throw new NoCustomerDetailsFound();
 		} 
 		else {
 			System.out.println("Please Select id to remove");
 			String id=sc.next();
+			int count=0;
 			for (int i = 0; i < al.size(); i++) {
 				c = al.get(i);
 				if (c.getCustomerId().equals(id)) {
 					al.remove(i);
 					System.out.println(al);
+					break;
+				}
+				else {
+					count++;
 				}
 			}
+			if(count==al.size())
+				System.out.println(id + " Id not Exists");
 		}
 	}
 
 	// Updating Customer EmailId by CustomerId
-	public void updateCustomerEmailId() {
+	public void updateCustomerEmailId() throws NoCustomerDetailsFound {
 		if (al.isEmpty()) {
-			System.out.println("No Customer Details Exists, Add the Customer details to Update EMail Id");
+			//System.out.println("No Customer Details Exists, Add the Customer details to Update EMail Id");
+			throw new NoCustomerDetailsFound();
 		}
 		else {
 			System.out.println("Please Select id to Update EmailId");
 			String id=sc.next();
 			System.out.println("Please Enter New E-MailId");
 			String email=sc.next();
+			int count=0;
 			for (int i = 0; i < al.size(); i++) {
 				c = al.get(i);
 				if (c.getCustomerId().equals(id)) {
 					c.setEmailId(email);
 					System.out.println(al);
 				}
-//				else
-//					System.out.println(id+ "Id Not Exists");
+				else {
+					count++;
+				}
 			}
-			
+			if(count==al.size())
+			System.out.println(id + " Id not Exists");
 		}
 	}
 
 	// Updating Customer Mobile Number by CustomerId
-	public void updateCustomerMobileNumber() {
+	public void updateCustomerMobileNumber() throws NoCustomerDetailsFound {
 		if (al.isEmpty()) {
-			System.out.println("No Customer Details Exists, Add the Customer details to Update Mobile Number");
+			//System.out.println("No Customer Details Exists, Add the Customer details to Update Mobile Number");
+			throw new NoCustomerDetailsFound();
 		} 
 		else {
 			System.out.println("Please Select id to Update Mobile Number");
 			String id=sc.next();
 			System.out.println("Please Enter New Mobile Number");
 			long mobile=sc.nextLong();
+			int count=0;
 			for (int i = 0; i < al.size(); i++) {
 				c = al.get(i);
 				if (c.getCustomerId().equals(id)) {
 					c.setMobile_No(mobile);
 					System.out.println(al);
 				}
-//				else
-//					System.out.println(id+ "Id Not Exists");
+				else
+					count++;
 			}
+			if(count==al.size())
+				System.out.println(id + " Id not Exists");
 		}
 	}
 	
 	//Display Customer Details
-	public void displayCustomerDetails() {
+	public void displayCustomerDetails() throws NoCustomerDetailsFound {
 		if(al.isEmpty()) {
-			System.out.println("No Customer Details Exists, Add the Customer details to Display");
+			//System.out.println("No Customer Details Exists, Add the Customer details to Display");
+			throw new NoCustomerDetailsFound();
 		}
 		else
 			System.out.println(al);
