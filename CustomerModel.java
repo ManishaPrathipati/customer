@@ -32,7 +32,7 @@ public class CustomerModel {
 		this.password = password;
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args){
 		CustomerModel cmodel=new CustomerModel("admin", "admin");
 		Scanner scan=new Scanner(System.in);
 		System.out.println("Please Enter the User Name");
@@ -53,23 +53,44 @@ public class CustomerModel {
 				int choice=scan.nextInt();
 				switch (choice) {
 				case 1: {
-					clog.addCustomer();
+					try {
+						clog.addCustomer();
+					}
+					catch (DuplicateCustomerId dci) {
+						System.out.println("DuplicateCustomerId occured");
+					}
 					break;
 				}
 				case 2: {
-					clog.removeCustomer();
+					try {
+						clog.removeCustomer();
+					} catch (NoCustomerDetailsFound e) {
+						System.out.println("No Customer Details Exists, Add the Customer details to Remove Customer");
+					}
 					break;
 				}
 				case 3: {
-					clog.updateCustomerEmailId();
+					try {
+						clog.updateCustomerEmailId();
+					} catch (NoCustomerDetailsFound e) {
+						System.out.println("No Customer Details Exists, Add the Customer details to Update EMail Id");
+					}
 					break;
 				}
 				case 4: {
-					clog.updateCustomerMobileNumber();
+					try {
+						clog.updateCustomerMobileNumber();
+					} catch (NoCustomerDetailsFound e) {
+						System.out.println("No Customer Details Exists, Add the Customer details to Update Mobile Number");
+					}
 					break;
 				}
 				case 5: {
-					clog.displayCustomerDetails();
+					try {
+						clog.displayCustomerDetails();
+					} catch (NoCustomerDetailsFound e) {
+						System.out.println("No Customer Details Exists, Add the Customer details to Display");
+					}
 					break;
 				}
 				case 6: {
@@ -77,7 +98,12 @@ public class CustomerModel {
 					break;
 				}
 				default:{
-						throw new OptionInCorrectException();
+						try {
+							throw new OptionInCorrectException();
+						}
+						catch(OptionInCorrectException oic) {
+							System.out.println("You had Choosen the Incorrect Option, Please Choose from the above Menu");
+						}
 				}
 					
 				}
